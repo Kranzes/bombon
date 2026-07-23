@@ -7,6 +7,7 @@
 let
   rustPassthru = pkg: passthruVendoredSbom.rust pkg { inherit pkgs; };
   npmPassthru = pkg: passthruVendoredSbom.npm pkg { inherit pkgs; };
+  goPassthru = pkg: passthruVendoredSbom.go pkg { inherit pkgs; };
 
   buildtimeOptions = {
     includeBuildtimeDependencies = true;
@@ -102,6 +103,17 @@ let
       options = buildtimeOptions;
     }
 
+    {
+      name = "ssh-tpm-agent";
+      drv = goPassthru ssh-tpm-agent;
+      options = { };
+    }
+    {
+      name = "ssh-tpm-agent-buildtime";
+      drv = goPassthru ssh-tpm-agent;
+      options = buildtimeOptions;
+    }
+
     # Multiple src urls
     {
       name = "kexec-tools";
@@ -125,8 +137,8 @@ let
     # Potentially download a newer version than the one being checked because
     # it includes updated SPDX identifiers. They are stored in a file that just
     # lives alongside the CycloneDX schema file.
-    rev = cycloneDxVersion;
-    sha256 = "sha256-30u5dqNj3xgVO2MONdHJIoqwdgFSbyOwBQQc0AnoDWM=";
+    rev = "fac1ff6ed49c1d4801912cf7d7ce5dabbd773290";
+    sha256 = "sha256-Nfi5NeHfbvXP5MzpCbd+lf7dk98ekj1Wht/VyFiRuzs=";
   };
 
   buildBomAndValidate =
